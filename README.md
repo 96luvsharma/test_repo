@@ -6,3 +6,4 @@
 
 ### The fscore_opt.py file is the library I created to make repeating processes automated for multiple firms, saving me time in the long run and helping me scale the application.
 
+### An app like this can be used in a working environment which be customized as per the tasks performed regularly in the finance department and can help save time for all my future peers along with the effective and efficient workflow for the company.
