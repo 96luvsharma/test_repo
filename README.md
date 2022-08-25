@@ -1,5 +1,5 @@
 # About the Repository
-## This is my very first working app to analyse F-Score of multiple and single firm. 
+## This is my very first working app to create a Historical Efficient Frontier and Automated current F-score claculation for a single or multiple firms. 
 ## It also has a portfolio returns calculator which calculates the historical returns of the selected firms and shows the average return of the porfolio.
 
 [Click here to see how it works](https://96luvsharma-test-repo-luvsharma-ocqu9k.streamlitapp.com/)
