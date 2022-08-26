@@ -185,7 +185,7 @@ if nav == 'Efficient Frontier':
         if 1 < len(X) < 40 :
             my_bar = st.progress(0)
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
-            st.text("It may take 1-30 minutes depending on the market selected.")
+            st.text("It may take 1-15 minutes depending on the market selected.")
             weight = []
 
             # if tickers == 'FTSE100':
