@@ -12,7 +12,7 @@ from streamlit_option_menu import option_menu
 import datetime as dt
 import numpy as np
 import time
-from stqdm import stqdm
+
 
 prog = 0
 
