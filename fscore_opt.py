@@ -361,7 +361,7 @@ def EF_graph(meanReturns, covMatrix, riskFreeRate=0, constraintSet=(0,1)):
         mode='markers',
         x=[maxSR_std],
         y=[maxSR_returns],
-        marker=dict(color='red',size=14,line=dict(width=3, color='black'))
+        marker=dict(color='red',size=14,line=dict(width=3, color='white'))
     )
 
     #Min Vol
@@ -370,7 +370,7 @@ def EF_graph(meanReturns, covMatrix, riskFreeRate=0, constraintSet=(0,1)):
         mode='markers',
         x=[minVol_std],
         y=[minVol_returns],
-        marker=dict(color='green',size=14,line=dict(width=3, color='black'))
+        marker=dict(color='green',size=14,line=dict(width=3, color='white'))
     )
 
     #Efficient Frontier
@@ -379,7 +379,7 @@ def EF_graph(meanReturns, covMatrix, riskFreeRate=0, constraintSet=(0,1)):
         mode='lines',
         x=[round(ef_std*100, 2) for ef_std in efficientList],
         y=[round(target*100, 2) for target in targetReturns],
-        line=dict(color='black', width=4, dash='dashdot')
+        line=dict(color='white', width=4, dash='dashdot')
     )
 
     data = [MaxSharpeRatio, MinVol, EF_curve]
@@ -391,8 +391,8 @@ def EF_graph(meanReturns, covMatrix, riskFreeRate=0, constraintSet=(0,1)):
         showlegend = True,
         legend = dict(
             x = 0.75, y = 0, traceorder='normal',
-            bgcolor='#E2E2E2',
-            bordercolor='black',
+            bgcolor='black',
+            bordercolor='white',
             borderwidth=2),
         width=800,
         height=600)
