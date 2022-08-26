@@ -186,7 +186,7 @@ if nav == 'Efficient Frontier':
 #             my_bar = st.progress(0)
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
             st.text("It may take 1-15 minutes depending on the market selected.")
-            with st.spinner("Calculating...")
+            with st.spinner("Calculating..."):
                 time.sleep(5)
                 weight = []
 
@@ -204,7 +204,7 @@ if nav == 'Efficient Frontier':
     #             my_bar.progress(10)
                 weights = np.array(weight)
     #             my_bar.progress(15)
-                """Calculating..."""
+#                 """Calculating..."""
                 Returns, Std, mWeights, ResultGraph, SR, RET = fs.eff_front(tickers,weights, graph= True)
     #             my_bar.progress(75)
 
