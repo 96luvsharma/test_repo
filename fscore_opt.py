@@ -442,7 +442,7 @@ def tickers_dax(details = False):
 
     if details:
         return table
-    dax_tickers = sorted(table['Ticker symbol'].tolist())
+    dax_tickers = sorted(table['Ticker'].tolist())
 
     return dax_tickers
 
