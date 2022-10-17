@@ -40,15 +40,15 @@ nav = option_menu(menu_title = 'Navigation',
 
 
 if nav == 'Multiple Firm F-Score':
-    sel = st.selectbox("Markets", options=markets)
-    if sel == 'S&P500':
-        selection = st.multiselect('Please select multiple stocks to analyze.',sp500)
-    elif sel == "NASDAQ":
-        selection = st.multiselect('Please select multiple stocks to analyze.',nasdaq)
-    elif sel == 'DAX40':
-        selection = st.multiselect('Please select multiple stocks to analyze.',dax40)
-    else:
-        b=0
+#     sel = st.selectbox("Markets", options=markets)
+#     if sel == 'S&P500':
+    selection = st.multiselect('Please select multiple stocks to analyze.',sp500)
+#     elif sel == "NASDAQ":
+#         selection = st.multiselect('Please select multiple stocks to analyze.',nasdaq)
+#     elif sel == 'DAX40':
+#         selection = st.multiselect('Please select multiple stocks to analyze.',dax40)
+#     else:
+#         b=0
     
     btn = st.button('Calculate')
 
