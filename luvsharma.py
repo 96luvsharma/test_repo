@@ -154,7 +154,7 @@ if nav == 'Efficient Frontier':
     st.title("Historical Effecient Frontier Calculation.")
 
 
-    X = st.selectbox('Markets', options=['Please select a market from this dropdown menu.','S&P500 (^GSPC)', 'DOW30 (^DJI)','NASDAQ-100 (^NSC)','DAX40 (^GDAXI)' ,'FTSE100 (^FTSE)' ],index=0)
+    X = st.selectbox('Markets', options=['Please select a market from this dropdown menu.','CAC40 (^FCHI)', 'DOW30 (^DJI)','DAX40 (^GDAXI)','FTSE MIB Index (^FTSEMIB.MI)','NASDAQ-100 (^NSC)', 'FTSE100 (^FTSE)' ,'S&P500 (^GSPC)'],index=0)
 
     btn = st.button(' Calculate Efficient Frontier ')
     if btn:
@@ -170,90 +170,81 @@ if nav == 'Efficient Frontier':
                 tickers = fs.tickers_nasdaq100()
             elif X =='FTSE100 (^FTSE)':
                 tickers = fs.tickers_ftse100()
-            # elif X == 'FTSE250 (^FTMC)':
-                # tickers = fs.tickers_ftse250()
+            elif X == 'FTSE MIB Index (^FTSEMIB.MI)':
+                tickers = fs.tickers_mib()
             # elif X == 'IBOVESPA (^BVSP)':
                 # tickers = fs.tickers_ibovespa()
             elif X == 'DAX40 (^GDAXI)':
                 tickers = fs.tickers_dax()
-            # elif X == 'NIFTYBANK':
-            #     tickers = si.tickers_niftybank()
+            elif X == 'CAC40 (^FCHI)':
+                tickers = fs.tickers_cac40()
             else :
                 b = 1 #Random place holder.
 
 
         if 1 < len(X) < 40 :
-#             my_bar = st.progress(0)
+
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
             st.text("It may take 1-15 minutes depending on the market selected.")
-            with st.spinner(f"Collecting live data upto today for {X}"):
+            with st.spinner("Calculating..."):
                 time.sleep(5)
                 weight = []
 
-                # if tickers == 'FTSE100':
-                #     tickers +'.L'
-                # if tickers == 'FTSE250':
-                #     tickers +'.L'
-
-                # for i in range(len(tickers)):
-                #     x = len(tickers)
-                #     y = 1/x
-                #     weight.append(y)
+                
                 for i in range(len(tickers)):
                     weight.append(1/len(tickers))
-    #             my_bar.progress(10)
+    
                 weights = np.array(weight)
-    #             my_bar.progress(15)
-#                 """Calculating..."""
+  
                 Returns, Std, mWeights, ResultGraph, SR, RET = fs.eff_front(tickers,weights, graph= True)
-            st.success("Done!")
-#             my_bar.progress(75)
+            
 
-            # l=[]
-            # newWeights= []
-            # newList=[]
-            # for i in range(len(mWeights)):
-            #     if mWeights[i] < 0.001:
-            #         l.append(i)
-
-            #     else:
-            #         newWeights.append(mWeights[i])
-            #         newList.append(tickers[i])
-
-            # newWeights = np.array(newWeights)
-
-            # my_bar.progress(65)
-
-            # Returns, Std, Weights, NewGraph, NSR, NRET = fs.eff_front(newList,newWeights, graph=True)
-
-            Frame = pd.DataFrame()
-            Frame['Stocks'] = tickers
-            Frame['Weights'] = mWeights
-            Frame['Weights'] = round(Frame['Weights']*100,2)
+                Frame = pd.DataFrame()
+                Frame['Stocks'] = tickers
+                Frame['Weights'] = mWeights
+                Frame['Weights'] = round(Frame['Weights']*100,2)
 
 
 
 
-            st.plotly_chart(ResultGraph, use_container_width=True)
-            Frame1 = Frame[Frame.Weights > 0 ]
+            
+                Frame1 = Frame[Frame.Weights > 0 ]
+                # Frame1.to_csv('./Frame')
 
+                ind = []
+                for i in range(len(Frame1['Weights'])):
+                    i = i+1
+                    ind.append(i)
 
-            ind = []
-            for i in range(len(Frame1['Weights'])):
-                i = i+1
-                ind.append(i)
-
-            # Frame1.reindex(ind)
-            # Frame1.reset_index(drop=True)
-            Frame1.set_index([pd.Index(ind)],inplace=True)
-            # Frame1.drop('index',axis=1,inplace=True)
-            t = len(Frame1['Weights'])
-            st.table(Frame1)
-#             my_bar.progress(90)
-            st.text(f'Total Number of Assets invested in = {t}')
-            st.text("Calculated over the period of 5 years or 1260 days in total.")
-            st.text(f"Max Returns = {RET}")
-            st.text(f"Max Volatility = {SR}")
+                # Frame1.reindex(ind)
+                # Frame1.reset_index(drop=True)
+                
+                FinalFrame = pd.DataFrame(columns=['Company','Ticker','Weights'])
+                
+                FinalFrame['Ticker'] = Frame1['Stocks']
+                
+                company = list()
+                
+                names = FinalFrame['Ticker'].to_list()
+            
+                for i in range(0,len(names)):
+                    name = str()
+                    name = fs.get_company_name(names[i])  
+                    company.append(name)  
+                st.success("Done!")
+                st.plotly_chart(ResultGraph, use_container_width=True)
+                FinalFrame['Company'] = company
+                FinalFrame['Weights'] = Frame1['Weights']
+                FinalFrame.set_index([pd.Index(ind)],inplace=True)    
+                # Frame1.drop('index',axis=1,inplace=True)
+                t = len(FinalFrame['Weights'])
+                st.table(FinalFrame.style.format(subset=['Weights'], formatter="{:.2f}"))
+    #             my_bar.progress(90)
+                st.text(f'Total Number of Assets invested in = {t}')
+                st.text("Calculated over the period of 5 years or 1260 days in total.")
+                st.text(f"Max Returns = {RET}")
+                st.text(f"Max Volatility = {SR}")
+            
 #             my_bar.progress(100)
             
         else:
