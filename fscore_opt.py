@@ -2,6 +2,8 @@
 #Luv Sharma
 #University of Siena, Italy.
 
+import re
+import json
 import bs4
 import pandas as pd
 import requests
@@ -498,3 +500,68 @@ def tickers_ibovespa(details = False):
         ibovespa_tickers.append(ticks[i]+'.SA')
 
     return ibovespa_tickers
+
+
+def tickers_cac40(details = False):
+    #CAC40(^FCHI) french index.
+    cac40_tickers = list()
+    site = "https://en.wikipedia.org/wiki/CAC_40#Composition"
+
+    table = pd.read_html(site, attrs = {"id":"constituents"})[0]
+
+    if details:
+        return table
+    ticks = sorted(table['Ticker'].tolist())
+    cac40_tickers = ticks
+    # for i in range(len(ticks)):
+    #     cac40_tickers.append(ticks[i]+'.PA')
+
+    return cac40_tickers
+
+def tickers_mib(details = False):
+    #FTSE-MIB(FTSEMIB.MI) italian index-milan.
+    mib_tickers = list()
+    site = "https://en.wikipedia.org/wiki/FTSE_MIB#Components"
+
+    table = pd.read_html(site, attrs = {"id":"constituents"})[0]
+
+    if details:
+        return table
+    ticks = sorted(table['Ticker'].tolist())
+    mib_tickers = ticks
+    # for i in range(len(ticks)):
+    #     cac40_tickers.append(ticks[i]+'.PA')
+
+    return mib_tickers
+
+def _parse_json(url, headers = {'User-agent': 'Mozilla/5.0'}):
+    html = requests.get(url=url, headers = headers).text
+
+    json_str = html.split('root.App.main =')[1].split(
+        '(this)')[0].split(';\n}')[0].strip()
+    
+    try:
+        data = json.loads(json_str)[
+            'context']['dispatcher']['stores']['QuoteSummaryStore']
+    except:
+        return '{}'
+    else:
+        # return data
+        new_data = json.dumps(data).replace('{}', 'null')
+        new_data = re.sub(r'\{[\'|\"]raw[\'|\"]:(.*?),(.*?)\}', r'\1', new_data)
+
+        json_info = json.loads(new_data)
+
+        return json_info
+
+def get_company_name(ticker):
+    '''Scrape the company information and return a table of the officers
+
+       @param: ticker
+    '''
+    site = f"https://finance.yahoo.com/quote/{ticker}/profile?p={ticker}"
+    json_info = _parse_json(site)
+    json_info = json_info["price"]["longName"]
+   #  info_frame = pd.DataFrame.from_dict(json_info)
+   #  info_frame = info_frame.set_index("name")
+    return json_info
