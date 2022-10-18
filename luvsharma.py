@@ -16,7 +16,7 @@ import time
 
 prog = 0
 
-st.set_page_config(page_title="Luv Sharma",page_icon="chart_with_upwards_trend",layout="wide",)
+st.set_page_config(page_title="Luv Sharma",page_icon=":euro:",layout="wide",)
 
 
 sp500 = fs.sp500()
