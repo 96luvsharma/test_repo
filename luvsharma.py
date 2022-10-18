@@ -231,7 +231,7 @@ if nav == 'Efficient Frontier':
                 sharperatios = RET/SR
                 st.table(FinalFrame.style.format(subset=['Weights'], formatter="{:.2f}"))
                 st.text(f'Total Number of Assets invested in = {t}')
-                st.text(f'Maximum Sharpe Ratio = {sharperatios}')
+                st.text(f'Maximum Sharpe Ratio = {sharperatios:.2f}')
                 st.text("Calculated over the period of 5 years or 1260 days in total.")
                 st.text(f"Max Returns = {RET}")
                 st.text(f"Max Volatility = {SR}")
