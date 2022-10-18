@@ -179,7 +179,7 @@ if nav == 'Efficient Frontier':
         if 1 < len(X) < 40 :
 
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
-            st.text("It may take 1-15 minutes depending on the market selected. (Takes the longest for S&P 500) \U0001F605")
+            st.text("It may take 1-15 minutes depending on the market selected. (Takes the longest for S&P 500 \U0001F605)")
             with hc.HyLoader('Fetching live data from yahoo...',hc.Loaders.pacman):
                 time.sleep(5)
                 weight = []
