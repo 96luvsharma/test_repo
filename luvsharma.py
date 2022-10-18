@@ -51,25 +51,20 @@ if nav == 'Multiple Firm F-Score':
 #         b=0
     
     btn = st.button('Calculate')
-
     if btn:
-        a = 1
-        name = list(selection)
-        df = pd.DataFrame()
-        for i in selection:
-            statements = fs.get_statements(i)  
+        
+#         name = list(selection)
+        df = pd.DataFrame(columns=['F-score'],index=selection)
+        score= list()
+        for i in range(len(selection)):
+            statements = fs.get_statements(selection[i])  
             total, profit, lev, op = fs.total_score()
-            #company = [i]
-            score = [total]
-            # fscore = pd.DataFrame()
-            # fscore = pd.DataFrame(list(zip(company, score)),columns=cols)
-            df = df.append(score)
-            a += 1
-
-        df.set_index([selection], inplace=True)
-        df.columns = ['F-Score']
+            score.append(total)
+           
+            
+        df['F-score'] = score
         st.subheader('Total score of the selected firms is as follows out of 9.')
-        st.bar_chart(df,height=400)
+        st.bar_chart(df['F-score'],height=600)
             
 
     
