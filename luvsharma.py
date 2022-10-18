@@ -8,6 +8,7 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 import plotly.graph_objects as go
+import hydralit_components as hc
 from streamlit_option_menu import option_menu
 import datetime as dt
 import numpy as np
@@ -179,7 +180,7 @@ if nav == 'Efficient Frontier':
 
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
             st.text("It may take 1-15 minutes depending on the market selected.")
-            with st.spinner("Fetching live data from yahoo finance..."):
+            with hc.HyLoader('Fetching live data from yahoo...',hc.Loaders.pacman):
                 time.sleep(5)
                 weight = []
 
