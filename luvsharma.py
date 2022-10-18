@@ -167,8 +167,6 @@ if nav == 'Efficient Frontier':
                 tickers = fs.tickers_ftse100()
             elif X == 'FTSE MIB Index (^FTSEMIB.MI)':
                 tickers = fs.tickers_mib()
-            # elif X == 'IBOVESPA (^BVSP)':
-                # tickers = fs.tickers_ibovespa()
             elif X == 'DAX40 (^GDAXI)':
                 tickers = fs.tickers_dax()
             elif X == 'CAC40 (^FCHI)':
@@ -181,7 +179,7 @@ if nav == 'Efficient Frontier':
 
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
             st.text("It may take 1-15 minutes depending on the market selected.")
-            with st.spinner("Calculating..."):
+            with st.spinner("Getting live data from yahoo finance..."):
                 time.sleep(5)
                 weight = []
 
@@ -210,9 +208,6 @@ if nav == 'Efficient Frontier':
                 for i in range(len(Frame1['Weights'])):
                     i = i+1
                     ind.append(i)
-
-                # Frame1.reindex(ind)
-                # Frame1.reset_index(drop=True)
                 
                 FinalFrame = pd.DataFrame(columns=['Company','Ticker','Weights'])
                 
@@ -231,16 +226,13 @@ if nav == 'Efficient Frontier':
                 FinalFrame['Company'] = company
                 FinalFrame['Weights'] = Frame1['Weights']
                 FinalFrame.set_index([pd.Index(ind)],inplace=True)    
-                # Frame1.drop('index',axis=1,inplace=True)
                 t = len(FinalFrame['Weights'])
                 st.table(FinalFrame.style.format(subset=['Weights'], formatter="{:.2f}"))
-    #             my_bar.progress(90)
                 st.text(f'Total Number of Assets invested in = {t}')
                 st.text("Calculated over the period of 5 years or 1260 days in total.")
                 st.text(f"Max Returns = {RET}")
                 st.text(f"Max Volatility = {SR}")
             
-#             my_bar.progress(100)
             
         else:
             st.text("Please select a market from the select box above.")
