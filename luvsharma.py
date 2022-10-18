@@ -179,7 +179,7 @@ if nav == 'Efficient Frontier':
 
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
             st.text("It may take 1-15 minutes depending on the market selected.")
-            with st.spinner("Getting live data from yahoo finance..."):
+            with st.spinner("Fetching live data from yahoo finance..."):
                 time.sleep(5)
                 weight = []
 
