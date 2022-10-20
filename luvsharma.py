@@ -18,12 +18,12 @@ import time
 prog = 0
 
 st.set_page_config(page_title="Luv Sharma",page_icon=":euro:",layout="wide")
-hide_menu_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        </style>
-        """
-st.markdown(hide_menu_style, unsafe_allow_html=True)
+# hide_menu_style = """
+#         <style>
+#         #MainMenu {visibility: hidden;}
+#         </style>
+#         """
+# st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 
 sp500 = fs.sp500()
