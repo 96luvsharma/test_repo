@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit serve luvsharma.py
+web: sh setup.sh && streamlit run luvsharma.py
