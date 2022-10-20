@@ -20,6 +20,7 @@ prog = 0
 st.set_page_config(page_title="Luv Sharma",page_icon=":euro:",layout="wide")
 hide_st_style = """
             <style>
+            .css-hi6a2p {padding-top: 0rem;}
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
