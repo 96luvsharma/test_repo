@@ -24,7 +24,8 @@ st.set_page_config(page_title="Luv Sharma",page_icon=":euro:",layout="wide")
 #         </style>
 #         """
 # st.markdown(hide_menu_style, unsafe_allow_html=True)
-
+hide_source = """<style>.css-1wud4gv e1pxm3bq4{visibility:hidden}</style>"""
+st.markdown(hide_source, unsafe_allow_html=True)
 
 sp500 = fs.sp500()
 nasdaq = si.tickers_nasdaq()
