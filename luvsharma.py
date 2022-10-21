@@ -239,6 +239,7 @@ if nav == 'Efficient Frontier':
                 sharperatios = RET/SR
                 st.text(f'Sharpe ratio for this distribution = {sharperatios:.2f}')
                 st.table(FinalFrame.style.format(subset=['Weights'], formatter="{:.2f}"))
+                st.download_button(label='Download data as CSV',data=fs.convert_csv(FinalFrame),file_name=f'{X} Effecient Frontier.csv',mime='text/csv')
                 st.text(f'Total Number of Assets invested in = {t}')
                 st.text("Calculated over the period of 5 years or 1260 days in total.")
                 st.text(f"Max Returns = {RET}")
