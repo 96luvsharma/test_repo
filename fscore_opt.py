@@ -16,6 +16,10 @@ import datetime as dt
 from plotly import graph_objects as go
 
 
+def convert_csv(df):
+
+    return df.to_csv().encode('utf-8')
+
 def dow():
     dow = si.tickers_dow()
     return dow
