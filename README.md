@@ -3,7 +3,7 @@
 ## It also has a portfolio returns calculator which calculates the historical returns of the selected firms and shows the average return of the porfolio.
 ### (All the data used is collected in the real time through web scraping and python libraries, like the historical prices for efficient frontier calculations and the financial statements for the calculation of the F-Score.) 
 
-[Click here to see how it works](https://96luvsharma-test-repo-luvsharma-ocqu9k.streamlitapp.com/)
+[Click here to see how it works](https://luvsharma.streamlit.app/)
 
 ### The fscore_opt.py file is the library I created to make repeating processes automated for multiple firms, saving me time in the long run and helping me scale the application.
 
