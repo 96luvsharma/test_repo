@@ -218,21 +218,21 @@ if nav == 'Efficient Frontier':
                     i = i+1
                     ind.append(i)
                 
-                FinalFrame = pd.DataFrame(columns=['Company','Ticker','Weights'])
+                FinalFrame = pd.DataFrame(columns=['Ticker','Weights'])
                 
                 FinalFrame['Ticker'] = Frame1['Stocks']
                 
-                company = list()
+#                 company = list()
                 
                 names = FinalFrame['Ticker'].to_list()
             
-                for i in range(0,len(names)):
-                    name = str()
-                    name = fs.get_company_name(names[i])  
-                    company.append(name)  
+#                 for i in range(0,len(names)):
+#                     name = str()
+#                     name = fs.get_company_name(names[i])  
+#                     company.append(name)  
                 st.success("Done!")
                 st.plotly_chart(ResultGraph, use_container_width=True)
-                FinalFrame['Company'] = company
+#                 FinalFrame['Company'] = company
                 FinalFrame['Weights'] = Frame1['Weights']
                 FinalFrame.set_index([pd.Index(ind)],inplace=True)    
                 t = len(FinalFrame['Weights'])
