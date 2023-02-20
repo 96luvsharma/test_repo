@@ -70,7 +70,8 @@ if nav == 'Multiple Firm F-Score':
         errors = list()
         prog_text = 'Doing calculations very fast!! Just a sec kind human.'
         for i in range(len(selection)):
-            prog= prog +1
+            if prog<99:
+                prog= prog +1
             progress.progress(prog)
             try:
                 # statements = fs.get_statements(selection[i])  
@@ -85,7 +86,8 @@ if nav == 'Multiple Firm F-Score':
         for i in range(len(errors)):
             if len(errors)>=1:
                 tempList.remove(errors[i])
-                prog= prog +1
+                if prog<99:
+                    prog= prog +1
                 progress.progress(prog)
 
         progress.progress(100)   
