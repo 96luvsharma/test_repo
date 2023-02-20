@@ -63,12 +63,15 @@ if nav == 'Multiple Firm F-Score':
     if btn:
         
 #         name = list(selection)
-        
+        prog = 0
+        progress = st.progress(0)
         score= list()
         tempList = selection
         errors = list()
+        prog_text = 'Doing calculations very fast!! Just a sec kind human.'
         for i in range(len(selection)):
-            
+            prog= prog +1
+            progress.progress(prog)
             try:
                 # statements = fs.get_statements(selection[i])  
                 total, profit, lev, op = 0,0,0,0
@@ -77,16 +80,19 @@ if nav == 'Multiple Firm F-Score':
                 
             except:
                 errors.append(selection[i])
-                
+            
 
         for i in range(len(errors)):
             if len(errors)>=1:
                 tempList.remove(errors[i])
-            
+                prog= prog +1
+                progress.progress(prog)
+
+        progress.progress(100)   
         if len(errors)>=1:
             st.warning(f"Oops! Score for {errors} could not be calculated because the financial statements provided by Yahoo were missing key values used for the calculations.")
 
-
+        
         df = pd.DataFrame(columns=['F-score'],index=tempList)
         df['F-score'] = score
         st.subheader('Total score of the selected firms is as follows out of 9.')
