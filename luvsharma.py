@@ -66,8 +66,9 @@ if nav == 'Multiple Firm F-Score':
         df = pd.DataFrame(columns=['F-score'],index=selection)
         score= list()
         for i in range(len(selection)):
-            statements = fs.get_statements(selection[i])  
-            total, profit, lev, op = fs.total_score()
+            # statements = fs.get_statements(selection[i])  
+            total, profit, lev, op = 0,0,0,0
+            total, profit, lev, op = fs.total_score(stock=selection[i])
             score.append(total)
            
             
@@ -83,8 +84,7 @@ if nav == 'Single Firm F-Score':
     btn = st.button('Calculate')
 
     if btn:
-        statements = fs.get_statements(selection)
-        total, profit, lev, op = fs.total_score()
+        total, profit, lev, op = fs.total_score(stock=selection)
         st.header(f'The F-Score for {selection} is {total}/9.')    
         st.subheader(f'1. The Profitability score for {selection} is {profit}.')
         st.subheader(f'2. The Leverage score for {selection} is {lev}.')
@@ -222,17 +222,17 @@ if nav == 'Efficient Frontier':
                 
                 FinalFrame['Ticker'] = Frame1['Stocks']
                 
-#                 company = list()
+                #company = list()
                 
                 names = FinalFrame['Ticker'].to_list()
             
-#                 for i in range(0,len(names)):
-#                     name = str()
-#                     name = fs.get_company_name(names[i])  
-#                     company.append(name)  
+                # for i in range(0,len(names)):
+                #     name = str()
+                #     name = fs.get_company_name(names[i])  
+                #     company.append(name)  
                 st.success("Done!")
                 st.plotly_chart(ResultGraph, use_container_width=True)
-#                 FinalFrame['Company'] = company
+                # FinalFrame['Company'] = company
                 FinalFrame['Weights'] = Frame1['Weights']
                 FinalFrame.set_index([pd.Index(ind)],inplace=True)    
                 t = len(FinalFrame['Weights'])
