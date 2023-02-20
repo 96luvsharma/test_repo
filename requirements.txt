@@ -9,3 +9,4 @@ streamlit_option_menu==0.3.2
 yahoo_fin==0.8.9.1
 yfinance==0.1.74
 hydralit_components==1.0.10
+yahooquery==2.3.0
