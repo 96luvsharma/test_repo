@@ -84,7 +84,7 @@ if nav == 'Multiple Firm F-Score':
                 tempList.remove(errors[i])
             
         if len(errors)>=1:
-            st.warning(f"Oops! Score for {errors} could not be calculated due to faulty financial statements provided by Yahoo.")
+            st.warning(f"Oops! Score for {errors} could not be calculated because the financial statements provided by Yahoo were missing key values used for the calculations.")
 
 
         df = pd.DataFrame(columns=['F-score'],index=tempList)
