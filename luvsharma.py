@@ -63,15 +63,31 @@ if nav == 'Multiple Firm F-Score':
     if btn:
         
 #         name = list(selection)
-        df = pd.DataFrame(columns=['F-score'],index=selection)
+        
         score= list()
+        tempList = selection
+        errors = list()
         for i in range(len(selection)):
-            # statements = fs.get_statements(selection[i])  
-            total, profit, lev, op = 0,0,0,0
-            total, profit, lev, op = fs.total_score(stock=selection[i])
-            score.append(total)
-           
             
+            try:
+                # statements = fs.get_statements(selection[i])  
+                total, profit, lev, op = 0,0,0,0
+                total, profit, lev, op = fs.total_score(stock=selection[i])
+                score.append(total)
+                
+            except:
+                errors.append(selection[i])
+                
+
+        for i in range(len(errors)):
+            if len(errors)>=1:
+                tempList.remove(errors[i])
+            
+        if len(errors)>=1:
+            st.warning(f"Oops! Score for {errors} could not be calculated due to faulty financial statements provided by Yahoo.")
+
+
+        df = pd.DataFrame(columns=['F-score'],index=tempList)
         df['F-score'] = score
         st.subheader('Total score of the selected firms is as follows out of 9.')
         st.bar_chart(df['F-score'],height=600)
@@ -188,6 +204,7 @@ if nav == 'Efficient Frontier':
 
             st.text("Please wait a few minutes and scroll down for details once the process is completed. ")
             st.text("It may take 1-15 minutes depending on the market selected. (Takes the longest for S&P 500 \U0001F605)")
+            st.write("Please feel free to reach out as the projects are made using web scraping and even small changes to the sources like yahoo finance and wikipedia websites may break the process. Thank you!")
             with hc.HyLoader('Fetching live data from yahoo...',hc.Loaders.pacman):
 
                 weight = []
