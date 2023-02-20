@@ -1,6 +1,6 @@
-#Automated Piotroski's F-Score Calculation.
 #Luv Sharma
 #University of Siena, Italy.
+
 
 import re
 import json
@@ -14,6 +14,28 @@ import numpy as np
 from scipy import optimize as sc
 import datetime as dt
 from plotly import graph_objects as go
+import yfinance as yf
+from yahooquery import Ticker
+
+def scraper(stock):
+    try:
+        company = Ticker(stock)
+        BS = company.balance_sheet()
+        IS = company.income_statement()
+        CF = company.cash_flow()
+
+    except:
+        Exception
+        IndexError
+        try:
+            company = yf.Ticker(stock)
+            BS = company.balance_sheet()
+            IS = company.income_statement()
+            CF = company.cash_flow()
+        except:
+            return ValueError('Scraper not working!')
+    
+    return BS.T, IS.T, CF.T
 
 
 def convert_csv(df):
@@ -91,19 +113,33 @@ def t_sp500(): #Longer method to Fetch Ticker Symbols.
     
 global stock 
 
+def income_st(stock): #Fetching Income Statement
+    tick = yf.Ticker(stock)
+    IS = tick.get_income_stmt()
+    return IS
+
+def bal_sht(stock): #Fetching Balance Sheet
+    tick = yf.Ticker(stock)
+    BS = tick.get_balance_sheet()
+    return BS
+
+def cash_flw(stock): #Fetching Cash Flow
+    tick = yf.Ticker(stock)
+    CF = tick.get_cash_flow()
+    return CF
+
+
 def get_statements(stocks):
-    global balance_sheet
-    global income_statement
-    global cash_flow
-    balance_sheet = si.get_balance_sheet(stocks)
-    income_statement = si.get_income_statement(stocks)
-    cash_flow = si.get_cash_flow(stocks)
+    BS, IS, CF = scraper(stocks)
+    balance_sheet = BS.T
+    income_statement = IS.T
+    cash_flow = CF.T
     return balance_sheet, income_statement, cash_flow
 
 
 
 def save_statements(stocks):
-    get_statements(stocks)
+    balance_sheet, income_statement, cash_flow = get_statements(stocks)
     i = 0
     while i <1:
         balance_sheet.to_csv(f'{stocks}_Balance_Sheet.csv')
@@ -113,16 +149,16 @@ def save_statements(stocks):
 
 #Calculating Profitability Score.
 
-def profitability():
+def profitability(balance_sheet, income_statement, cash_flow):
     profit_score = 0
-    totalassets = balance_sheet.loc['totalAssets']
-    netincome = income_statement.loc['netIncome']
-    operatingcash = cash_flow.loc['totalCashFromOperatingActivities']
-    netincome_cy = netincome[0]
-    operatingcash_cy = operatingcash[0]
-    operatingcash_py = operatingcash[1]
-    ROA_cy = netincome[0]/totalassets[0]
-    ROA_py = netincome[1]/totalassets[1]
+    totalassets = balance_sheet.loc['TotalAssets']
+    netincome = income_statement.loc['NetIncome']
+    operatingcash = cash_flow.loc['CashFlowFromContinuingOperatingActivities']
+    netincome_cy = netincome[-1]
+    operatingcash_cy = operatingcash[-1]
+    operatingcash_py = operatingcash[-2]
+    ROA_cy = netincome[-1]/totalassets[-1]
+    ROA_py = netincome[-2]/totalassets[-2]
     Qualityofearnings = operatingcash_cy - netincome_cy
     
     #Taking netincome into consideration.
@@ -153,33 +189,33 @@ def profitability():
         
 
 
-def leverage():
+def leverage(balance_sheet, income_statement, cash_flow):
 
     leverage_score = 0
 
     #LongTermDebt
-    long_debt = balance_sheet.loc['longTermDebt']
-    long_debt_cy = long_debt[0]
-    long_debt_py = long_debt[1]
+    long_debt = balance_sheet.loc['LongTermDebt']
+    long_debt_cy = long_debt[-1]
+    long_debt_py = long_debt[-2]
 
     #Total Current Assets
-    current_assets = balance_sheet.loc['totalCurrentAssets']
-    current_assets_cy = current_assets[0]
-    current_assets_py = current_assets[1]
+    current_assets = balance_sheet.loc['CurrentAssets']
+    current_assets_cy = current_assets[-1]
+    current_assets_py = current_assets[-2]
 
     #Total Current Liabilities
-    current_liab = balance_sheet.loc['totalCurrentLiabilities']
-    current_liab_cy = current_liab[0]
-    current_liab_py = current_liab[1]
+    current_liab = balance_sheet.loc['CurrentLiabilities']
+    current_liab_cy = current_liab[-1]
+    current_liab_py = current_liab[-2]
 
     #Curretn Ratio for CY and PY
     Currentratio_cy = (current_assets_cy/current_liab_cy)
     Currentratio_py = (current_assets_py/current_liab_py)
 
     #Absence of Dilution (New shares issued or not)
-    shares = balance_sheet.loc['totalStockholderEquity']
-    shares_cy = shares[0]
-    shares_py = shares[1]
+    shares = balance_sheet.loc['StockholdersEquity']
+    shares_cy = shares[-1]
+    shares_py = shares[-2]
 
     #Scoring Parameters
     if long_debt_py - long_debt_cy > 0:
@@ -201,20 +237,20 @@ def leverage():
 
 
 
-def op_eff():
+def op_eff(balance_sheet, income_statement, cash_flow):
     operation = 0
-    grossprofit = income_statement.loc['grossProfit']
-    grossprofit_cy = grossprofit[0]
-    grossprofit_py = grossprofit[1]
+    grossprofit = income_statement.loc['GrossProfit']
+    grossprofit_cy = grossprofit[-1]
+    grossprofit_py = grossprofit[-2]
     
     #Asset Turnover Ratio
-    totalassets = balance_sheet.loc['totalAssets']
-    totalassets_cy = totalassets[0]
-    totalassets_py = totalassets[1]
+    totalassets = balance_sheet.loc['TotalAssets']
+    totalassets_cy = totalassets[-1]
+    totalassets_py = totalassets[-2]
     
-    totalrevenue = income_statement.loc['totalRevenue']
-    totalrevenue_cy = totalrevenue[0]
-    totalrevenue_py = totalrevenue[1]
+    totalrevenue = income_statement.loc['TotalRevenue']
+    totalrevenue_cy = totalrevenue[-1]
+    totalrevenue_py = totalrevenue[-2]
     
     assetturn_cy = (totalassets_cy/totalrevenue_cy)
     assetturn_py = (totalassets_py/totalrevenue_py)
@@ -236,10 +272,12 @@ def op_eff():
     return operation
     
 
-def total_score():
-    profit = profitability()
-    lev = leverage()
-    op = op_eff()
+def total_score(stock):
+    BS, IS, CF = get_statements(stocks=stock)
+    balance_sheet, income_statement, cash_flow = BS.T, IS.T, CF.T
+    profit = profitability(balance_sheet, income_statement, cash_flow)
+    lev = leverage(balance_sheet, income_statement, cash_flow)
+    op = op_eff(balance_sheet, income_statement, cash_flow)
     total_score = (profit + lev + op)
     return total_score, profit, lev, op
 
@@ -248,12 +286,13 @@ def get_info(stocks):
     return info
 
 
-def get_data(stock, start, end):
+def get_data(stock):
     data = pd.DataFrame()
     for i in range(len(stock)):
         # inter += 1
-        p = si.get_data(stock[i], start_date= start, end_date=  end)['adjclose']
-        data[stock[i]] = p
+        s = stock[i]
+        a = yf.Ticker(s).history(period='5y',interval='1d')['Close']
+        data[stock[i]] = a
     # stockData = pdr.get_data_yahoo(stock, start = start, end = end)
     # stockData = stockData['Adj Close']
     returns = data.pct_change()
@@ -421,7 +460,7 @@ def eff_front(stockList,weights, graph = bool):
     startDate = endDate - dt.timedelta(days=1260)
     data = pd.DataFrame()
 
-    meanReturns, covMatrix = get_data(stockList, start = startDate, end = endDate)
+    meanReturns, covMatrix = get_data(stockList)
 
     returns, std = pfolio_perf(weights, meanReturns, covMatrix)
 
@@ -538,7 +577,7 @@ def tickers_mib(details = False):
 
     return mib_tickers
 
-def _parse_json(url, headers = {'User-agent': 'Mozilla/5.0'}):
+def _parse_json(url, headers = {'User-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}):
     html = requests.get(url=url, headers = headers).text
 
     json_str = html.split('root.App.main =')[1].split(
@@ -569,3 +608,21 @@ def get_company_name(ticker):
    #  info_frame = pd.DataFrame.from_dict(json_info)
    #  info_frame = info_frame.set_index("name")
     return json_info
+
+def _parse_table(json_info):
+
+    df = pd.DataFrame(json_info)
+    
+    if df.empty:
+        return df
+    
+    del df["maxAge"]
+
+    df.set_index("endDate", inplace=True)
+    df.index = pd.to_datetime(df.index, unit="s")
+ 
+    df = df.transpose()
+    df.index.name = "Breakdown"
+
+    return df
+
