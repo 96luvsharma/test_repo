@@ -504,13 +504,13 @@ def tickers_nasdaq100(details = False):
 
 def tickers_ftse100(details = False):
     ftse100_tickers = list()
-    site = "https://en.wikipedia.org/wiki/FTSE_100_Index#Constituents_in_July_2022"
+    site = "https://en.wikipedia.org/wiki/FTSE_100_Index#Constituents"
 
     table = pd.read_html(site, attrs = {"id":"constituents"})[0]
 
     if details:
         return table
-    ticks = sorted(table['EPIC'].tolist())
+    ticks = sorted(table['Ticker'].tolist())
     for i in range(len(ticks)):
         ftse100_tickers.append(ticks[i]+'.L')
 
