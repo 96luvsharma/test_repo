@@ -480,6 +480,22 @@ def eff_front(stockList,weights, graph = bool):
     
     return returns, std , minWeights, ResultGraph, FSR, FRET
 
+def tickers_sp500(details = False):
+    #FTSE-MIB(FTSEMIB.MI) italian index-milan.
+    sp500 = list()
+    site = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies#S&P_500_component_stocks"
+
+    table = pd.read_html(site, attrs = {"id":"constituents"})[0]
+
+    if details:
+        return table
+    ticks = sorted(table['Symbol'].tolist())
+    sp500 = ticks
+    # for i in range(len(ticks)):
+    #     cac40_tickers.append(ticks[i]+'.PA')
+
+    return sp500
+
 def tickers_dax(details = False):
     site = "https://en.wikipedia.org/wiki/DAX#Components"
 
