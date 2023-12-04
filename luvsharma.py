@@ -28,7 +28,7 @@ st.set_page_config(page_title="Luv Sharma",page_icon=":euro:",layout="wide")
 # st.markdown(hide_st_style, unsafe_allow_html=True)
 
 
-sp500 = fs.sp500()
+sp500 = fs.tickers_sp500()
 nasdaq = si.tickers_nasdaq()
 dax40 = fs.tickers_dax()
 markets = ["Select a market to get the stock tickers","S&P500","NASDAQ", "DAX40"]
@@ -191,7 +191,7 @@ if nav == 'Efficient Frontier':
         tickers = []
         if len(X) > 1: 
             if X == 'S&P500 (^GSPC)':
-                tickers = si.tickers_sp500()
+                tickers = fs.tickers_sp500()
             elif X == 'DOW30 (^DJI)':
                 tickers = si.tickers_dow()
             elif X == 'NASDAQ-100 (^NSC)':
