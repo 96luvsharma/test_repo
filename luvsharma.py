@@ -34,7 +34,7 @@ dax40 = fs.tickers_dax()
 markets = ["Select a market to get the stock tickers","S&P500","NASDAQ", "DAX40"]
 
 nav = option_menu(menu_title = 'Navigation',
-    options=['Efficient Frontier']#,'Multiple Firm F-Score', 'Single Firm F-Score','Portfolio Dashboard', 'About Me' ],
+    options=['Efficient Frontier','Multiple Firm F-Score', 'Single Firm F-Score','Portfolio Dashboard', 'About Me' ],
     icons=['pie-chart-fill','cash-coin','file-bar-graph-fill','file-binary-fill','file-person'],
     menu_icon= "list",
     default_index=0,
